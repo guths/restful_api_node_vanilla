@@ -32,8 +32,15 @@ const server = http.createServer(function (req, res) {
         buffer += decoder.write(data)
     })
 
-    // Send the response
-    res.end(method);
+    req.on('end', function () {
+        buffer += decoder.end();
+        // Send the response
+
+        console.log('Request received with this payload', buffer)
+        res.end(method);
+    })
+
+
 });
 
 server.listen(3000, function () {
